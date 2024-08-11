@@ -51,7 +51,7 @@ build_v4l2loopback()
     echo "The v4l2loopback ${V4L2LOOPBACK_VERSION} kernel module container is not built."
     echo "Building ${V4L2LOOPBACK_VERSION} kernel module for ${V4L2LOOPBACK_KERNEL_VERSION} ..."
     podman pull registry.fedoraproject.org/fedora:latest
-    podman build --build-arg V4L2LOOPBACK_VERSION=${V4L2LOOPBACK_VERSION} \
+    podman build --network=host --build-arg V4L2LOOPBACK_VERSION=${V4L2LOOPBACK_VERSION} \
     --build-arg V4L2LOOPBACK_SHA256=${V4L2LOOPBACK_SHA256} \
     --build-arg V4L2LOOPBACK_KERNEL_VERSION=${V4L2LOOPBACK_KERNEL_VERSION} \
     -t ${V4L2LOOPBACK_IMAGE}:${V4L2LOOPBACK_IMAGETAG} ${BUILD_SOURCE}

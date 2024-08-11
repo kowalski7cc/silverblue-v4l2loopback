@@ -6,6 +6,7 @@ ARG V4L2LOOPBACK_VERSION
 ARG V4L2LOOPBACK_SHA256
 # 0.12.5 -> e152cd6df6a8add172fb74aca3a9188264823efa5a2317fe960d45880b9406ae
 # 0.12.7 -> e0782b8abe8f2235e2734f725dc1533a0729e674c4b7834921ade43b9f04939b
+# 0.13.2 -> 1e57e1e382d7451aa2a88d63cc9f146eab1f425b90e76104d4c3d73127e34771
 WORKDIR /tmp
 
 # Install koji and use to pull kernel packages based on V4L2LOOPBACK_KERNEL_VERSION
@@ -17,7 +18,7 @@ RUN dnf install -y koji && \
 RUN cd /tmp/koji && \
     dnf install -y \
     gc gcc glibc-devel glibc-headers \
-    ./kernel-core-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-devel-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-modules-${V4L2LOOPBACK_KERNEL_VERSION}.rpm && \
+    ./kernel-modules-core-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-core-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-devel-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-modules-${V4L2LOOPBACK_KERNEL_VERSION}.rpm && \
     dnf clean all -y
 
 RUN curl -LS https://github.com/umlaeute/v4l2loopback/archive/v${V4L2LOOPBACK_VERSION}.tar.gz| \
@@ -38,7 +39,7 @@ WORKDIR /tmp
 COPY --from=builder /tmp/koji/ /tmp/koji/
 
 RUN cd /tmp/koji && \
-    dnf install -y ./kernel-core-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-modules-${V4L2LOOPBACK_KERNEL_VERSION}.rpm  v4l-utils && \
+    dnf install -y ./kernel-modules-core-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-core-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-devel-${V4L2LOOPBACK_KERNEL_VERSION}.rpm ./kernel-modules-${V4L2LOOPBACK_KERNEL_VERSION}.rpm  v4l-utils && \
     rm -rf /tmp/koji
 
 COPY --from=builder /tmp/v4l2loopback-${V4L2LOOPBACK_VERSION}/v4l2loopback.ko \
